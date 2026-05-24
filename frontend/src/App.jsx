@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 const API_URL = "/api/products";
 
 export default function App() {
-  // Ces informations ne sont pas forcément nécessaires, vous pouvez les adapter à votre convenance
   const [products,   setProducts]   = useState([]);
   const [pagination, setPagination] = useState(null);
   const [loading,    setLoading]    = useState(false);
@@ -16,15 +15,46 @@ export default function App() {
   const [order,    setOrder]    = useState("desc");
 
   useEffect(() => {
-    // a completer...
-  }, [page, limit, category, sort, order]);
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Constructing the URL with parameters
+        const params = new URLSearchParams({
+          page,
+          category,
+          sort,
+          order,
+          limit: 10
+        });
+
+        const response = await fetch(`${API_URL}?${params.toString()}`);
+        if (!response.ok) throw new Error("Erreur réseau");
+        
+        const data = await response.json();
+        setProducts(data.products);
+        setPagination(data.pagination);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [page, category, sort, order]);  // Recharge when these values ​​change
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    setPage(1); 
+  };
 
   return (
     <div className="app">
       <div className="header">
         <h1>Catalogue produits</h1>
         <div className="filters">
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select value={category} onChange={handleCategoryChange}>
             <option value="">Toutes categories</option>
             <option value="shoes">Chaussures</option>
             <option value="clothing">Vetements</option>
@@ -48,17 +78,25 @@ export default function App() {
 
       {!loading && !error && (
         <>
-          {products.length === 0 ? (
-            <p className="empty">Aucun produit trouve.</p>
-          ) : (
-            <div className="product-grid">
-              {products.map((product) => (
-                <div key={product._id} />
-              ))}
-            </div>
-          )}
+          <div className="product-grid">
+            {products.map((product) => (
+              <div key={product._id} className="product-card">
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
+                <p><strong>{product.price} €</strong></p>
+                <small>Catégorie: {product.category}</small>
+              </div>
+            ))}
+          </div>
+
           {pagination && (
-            <div />
+            <div className="pagination">
+              <button disabled={page === 1} onClick={() => setPage(p => 1)}>Première page</button>
+              <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Précédent</button>
+              <span>Page {page} sur {pagination.totalPages}</span>
+              <button disabled={page === pagination.totalPages} onClick={() => setPage(p => p + 1)}>Suivant</button>
+              <button disabled={page === pagination.totalPages} onClick={() => setPage(p => pagination.totalPages)}>Dernière page</button>
+            </div>
           )}
         </>
       )}
