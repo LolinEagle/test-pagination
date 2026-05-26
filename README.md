@@ -10,7 +10,6 @@ L’entreprise est une **plateforme e‑commerce** (mode, accessoires, etc.) ave
 
 ## 2. Problème à résoudre
 
-
 | Axes                        | Description                                                                                                       |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | **Performance**             | Ne plus renvoyer ni afficher l’intégralité des articles en une seule requête / un seul rendu.                     |
@@ -18,11 +17,9 @@ L’entreprise est une **plateforme e‑commerce** (mode, accessoires, etc.) ave
 | **Recherche / exploration** | **Filtrer** (ex. par catégorie) et **trier** (ex. prix croissant / décroissant).                                  |
 | **Fiabilité**               | Pas de crash en cas de paramètres invalides, réseau instable ou réponse vide.                                     |
 
-
 ---
 
 ## 3. Périmètre fonctionnel
-
 
 | Exigence       | Détail                                                                                                                                                   |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -30,18 +27,15 @@ L’entreprise est une **plateforme e‑commerce** (mode, accessoires, etc.) ave
 | **Filtres**    | Au minimum un filtre pertinent sur le catalogue (ex. catégorie) ; possibilité d’en ajouter d’autres si le temps le permet.                               |
 | **Tris**       | Au minimum un tri sur un champ numérique ou textuel (ex. **prix** asc / desc).                                                                           |
 
-
 ---
 
 ## 4. Contraintes techniques (obligatoires)
-
 
 | Couche              | Technologie                             |
 | ------------------- | --------------------------------------- |
 | **Frontend**        | **React** (JavaScript ou TypeScript)    |
 | **Backend**         | **Node.js** avec **Express** (JS ou TS) |
 | **Base de données** | **MongoDB** — **sans Mongoose**         |
-
 
 Le reste (outillage, structure des dossiers, librairies UI) est laissé au candidat, dans la mesure où les exigences ci-dessus sont respectées.
 
@@ -59,4 +53,3 @@ Le reste (outillage, structure des dossiers, librairies UI) est laissé au candi
 
 - **Design graphique :** libre (sobriété suffisante pour un test).
 - **Modalité d’interaction** (boutons vs scroll infini, etc.) : libre, tant que le chargement reste **incrémental côté serveur**.
-
