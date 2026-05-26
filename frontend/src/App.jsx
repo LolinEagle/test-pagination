@@ -3,16 +3,16 @@ import { useState, useEffect } from "react";
 const API_URL = "/api/products";
 
 export default function App() {
-  const [products,   setProducts]   = useState([]);
+  const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState(null);
-  const [loading,    setLoading]    = useState(false);
-  const [error,      setError]      = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const [page,     setPage]     = useState(1);
-  const [limit]                 = useState(10);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
   const [category, setCategory] = useState("");
-  const [sort,     setSort]     = useState("createdAt");
-  const [order,    setOrder]    = useState("desc");
+  const [sort, setSort] = useState("createdAt");
+  const [order, setOrder] = useState("desc");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,12 +25,12 @@ export default function App() {
           category,
           sort,
           order,
-          limit: 10
+          limit: 10,
         });
 
         const response = await fetch(`${API_URL}?${params.toString()}`);
         if (!response.ok) throw new Error("Erreur réseau");
-        
+
         const data = await response.json();
         setProducts(data.products);
         setPagination(data.pagination);
@@ -42,11 +42,11 @@ export default function App() {
     };
 
     fetchProducts();
-  }, [page, category, sort, order]);  // Recharge when these values ​​change
+  }, [page, category, sort, order]); // Recharge when these values ​​change
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
-    setPage(1); 
+    setPage(1);
   };
 
   return (
@@ -74,28 +74,53 @@ export default function App() {
       </div>
 
       {loading && <p className="loading">Chargement...</p>}
-      {error   && <p className="error">Erreur : {error}</p>}
+      {error && <p className="error">Erreur : {error}</p>}
 
       {!loading && !error && (
         <>
-          <div className="product-grid">
-            {products.map((product) => (
-              <div key={product._id} className="product-card">
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p><strong>{product.price} €</strong></p>
-                <small>Catégorie: {product.category}</small>
-              </div>
-            ))}
-          </div>
+          {products.length === 0 ? (
+            <p className="empty">Aucun produit trouvé.</p>
+          ) : (
+            <div className="product-grid">
+              {products.map((product) => (
+                <div key={product._id} className="product-card">
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <p>
+                    <strong>{product.price} €</strong>
+                  </p>
+                  <small>Catégorie: {product.category}</small>
+                </div>
+              ))}
+            </div>
+          )}
 
           {pagination && (
             <div className="pagination">
-              <button disabled={page === 1} onClick={() => setPage(p => 1)}>Première page</button>
-              <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Précédent</button>
-              <span>Page {page} sur {pagination.totalPages}</span>
-              <button disabled={page === pagination.totalPages} onClick={() => setPage(p => p + 1)}>Suivant</button>
-              <button disabled={page === pagination.totalPages} onClick={() => setPage(p => pagination.totalPages)}>Dernière page</button>
+              <button disabled={page === 1} onClick={() => setPage((p) => 1)}>
+                Première page
+              </button>
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                Précédent
+              </button>
+              <span>
+                Page {page} sur {pagination.totalPages}
+              </span>
+              <button
+                disabled={page === pagination.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Suivant
+              </button>
+              <button
+                disabled={page === pagination.totalPages}
+                onClick={() => setPage((p) => pagination.totalPages)}
+              >
+                Dernière page
+              </button>
             </div>
           )}
         </>

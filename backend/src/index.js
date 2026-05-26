@@ -1,10 +1,10 @@
-const express  = require("express");
-const cors     = require("cors");
+const express = require("express");
+const cors = require("cors");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
-const app       = express();
-const PORT      = process.env.PORT || 3001;
+const app = express();
+const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
 
 async function start() {
@@ -24,7 +24,11 @@ async function start() {
 
       // Extracting query parameters
       let {
-        page = 1, limit = 10, category, sort = "createdAt", order = "desc"
+        page = 1,
+        limit = 10,
+        category,
+        sort = "createdAt",
+        order = "desc",
       } = req.query;
 
       // Conversion to numbers
@@ -35,11 +39,12 @@ async function start() {
       const query = {};
       const sortOptions = {};
 
-      if (category) query.category = category;        // Filter by category
-      sortOptions[sort] = order === "desc" ? -1 : 1;  // Sorting options
+      if (category) query.category = category; // Filter by category
+      sortOptions[sort] = order === "desc" ? -1 : 1; // Sorting options
 
       // Execution of the query
-      const products = await db.collection("products")
+      const products = await db
+        .collection("products")
         .find(query)
         .sort(sortOptions)
         .skip(skip)
@@ -55,15 +60,17 @@ async function start() {
           total,
           page,
           totalPages: Math.ceil(total / limit),
-          limit
-        }
+          limit,
+        },
       });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  app.listen(PORT, () => console.log("Serveur demarre sur http://localhost:" + PORT));
+  app.listen(PORT, () =>
+    console.log("Serveur démarre sur http://localhost:" + PORT),
+  );
 }
 
 start().catch((err) => {
