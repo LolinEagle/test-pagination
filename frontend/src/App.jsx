@@ -86,10 +86,10 @@ export default function App() {
                 <div key={product._id} className="product-card">
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
-                  <p>
+                  <p className="price">
                     <strong>{product.price} €</strong>
                   </p>
-                  <small>Catégorie: {product.category}</small>
+                  <small className="category">Catégorie: {product.category}</small>
                 </div>
               ))}
             </div>
@@ -97,29 +97,30 @@ export default function App() {
 
           {pagination && (
             <div className="pagination">
-              <button disabled={page === 1} onClick={() => setPage((p) => 1)}>
-                Première page
+              <button disabled={page === 1} onClick={() => setPage(1)}>
+                Début
               </button>
               <button
                 disabled={page === 1}
                 onClick={() => setPage((p) => p - 1)}
               >
-                Précédent
+                Précédente
               </button>
-              <span>
-                Page {page} sur {pagination.totalPages}
+              <span className="page-info">
+                Page <strong>{page}</strong> sur{" "}
+                <strong>{pagination.totalPages}</strong>
               </span>
               <button
                 disabled={page === pagination.totalPages}
                 onClick={() => setPage((p) => p + 1)}
               >
-                Suivant
+                Suivante
               </button>
               <button
                 disabled={page === pagination.totalPages}
-                onClick={() => setPage((p) => pagination.totalPages)}
+                onClick={() => setPage(pagination.totalPages)}
               >
-                Dernière page
+                Fin
               </button>
             </div>
           )}
